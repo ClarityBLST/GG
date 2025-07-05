@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json.schemastore.org/swcrc",
+  "module": {
+    "type": "es6"
+  },
+  "jsc": {
+    "target": "es2022",
+    "externalHelpers": true,
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": false,
+      "dynamicImport": false
+    },
+    "baseUrl": "./",
+    "paths": {
+      "#commands/*": ["./src/commands/*"],
+      "#events/*": ["./src/events/*"],
+      "#interactions/*": ["./src/interactions/*"],
+      "#lib/*": ["./src/lib/*"],
+      "#types/*": ["./src/types/*"]
+    },
+    "experimental": {
+      "keepImportAssertions": true
+    }
+  },
+  "exclude": ["^src/types/.*.ts$"]
+}
