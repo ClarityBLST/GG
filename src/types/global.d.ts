@@ -108,4 +108,41 @@ declare global {
       totalKills: number;
     };
   }
+
+  //#MARK: ScrimResult
+  /*
+  interface ScrimResult {
+  objectId: ObjectId;
+  scrimId: ObjectId;
+  teams: {
+    teamId: string;
+    teamName: string;
+    players: string[];
+    matches: {
+      matchNumber: number;
+      teamPosition: number;
+      teamKills: number[];
+    }[];
+  }[];
+}
+  */
+
+  interface MatchResult {
+    matchNumber: number;
+    teamPosition: number;
+    teamKills: number[];
+  }
+
+  interface TeamResult {
+    teamId: string;
+    teamName: string;
+    players: string[];
+    matches: MatchResult[];
+  }
+
+  interface ScrimResult {
+    _id: ObjectId;
+    scrimId: ObjectId;
+    teams: TeamResult[];
+  }
 }

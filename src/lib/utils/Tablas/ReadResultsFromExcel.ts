@@ -45,10 +45,19 @@ export async function leerResultadosScrimExcel({
         kills.push(isNaN(val) ? 0 : val);
       }
 
-      partidas.push({ partida: p, posicion, kills });
+      partidas.push({
+        matchNumber: p,
+        teamPosition: posicion,
+        teamKills: kills,
+      });
     }
 
-    resultados.push({ idEquipo, nombreEquipo, jugadores, partidas });
+    resultados.push({
+      teamId: idEquipo,
+      teamName: nombreEquipo,
+      players: jugadores,
+      matches: partidas,
+    });
   }
 
   return resultados;
