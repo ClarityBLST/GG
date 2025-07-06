@@ -82,11 +82,12 @@ declare global {
         CO: string;
         MX: string;
     };
-    teams: {
+teams: {
       slot: string; // A-Z
       name: string;
       players: string[];
       roleId?: string;
+      voiceChannelId?: string;
       registeredAt: Date;
       registeredBy: string;
       stats?: {

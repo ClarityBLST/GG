@@ -15,7 +15,7 @@ export default {
       description: "Your team's name (3-20 characters)",
       type: ApplicationCommandOptionType.String,
       required: true,
-      autocomplete: true,
+      autocomplete: false,
     },
     {
       name: "player_ids",
@@ -23,6 +23,13 @@ export default {
       type: ApplicationCommandOptionType.String,
       required: true,
     },
+    {
+        name: "discord_mentions",
+        description: "Discord mentions for team members (e.g., @Player1, @Player2)",
+        type: ApplicationCommandOptionType.User || ApplicationCommandOptionType.String,
+        required: false,
+        autocomplete: true,
+    }
   ] as APIApplicationCommandOption[],
   dm_permission: false,
 } as APIApplicationCommand;
