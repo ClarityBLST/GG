@@ -9,6 +9,7 @@ export default class Util {
 	public client: BaseClient<true>;
 
 	public constructor(client: BaseClient) {
+        // @ts-expect-error
 		this.client = client;
 	}
 

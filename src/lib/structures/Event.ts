@@ -10,9 +10,11 @@ export default abstract class Event {
 
 	// eslint-disable-next-line no-undef
 	public constructor(client: BaseClient, options: EventOptions) {
+        // @ts-expect-error
 		this.client = client;
 		this.name = options.name;
 		this.type = options.once ? 'once' : 'on';
+        // @ts-expect-error
 		this.emitter =
 			(typeof options.emitter === 'string'
 				? (Reflect.get(this.client, options.emitter) as EventEmitter)

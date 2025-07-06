@@ -20,6 +20,7 @@ export default abstract class Command {
 
 	// eslint-disable-next-line no-undef
 	public constructor(client: BaseClient, options: CommandOptions) {
+        // @ts-expect-error
 		this.client = client;
 		this.name = options.name;
 		this.description = options.description ?? 'No description provided';
