@@ -12,6 +12,7 @@ const db = await Database.getInstance(Configuration).connect();
 
 export default class extends Command {
   protected scrimCollection: Collection<Scrim>;
+  protected scrimCollectionTeamsResult: Collection<ScrimTeamsResult>;
 
   public constructor(client: BaseClient) {
     super(client, {
@@ -21,6 +22,8 @@ export default class extends Command {
     });
 
     this.scrimCollection = db.collection<Scrim>("scrims");
+    this.scrimCollectionTeamsResult =
+      db.collection<ScrimTeamsResult>("scrimTeamsResult");
   }
 
   public async execute(
@@ -80,9 +83,29 @@ export default class extends Command {
       equipos: teamsQuantity,
     });
 
+    const teamsResultsData: ScrimTeamsResult = {
+      _id: new ObjectId(),
+      scrimId: new ObjectId(scrim),
+      teams: resultsJson,
+    };
+
+    // Save the results to the database
+    const findExisting = await this.scrimCollectionTeamsResult.findOne({
+      scrimId: new ObjectId(scrim),
+    });
+
+    if (findExisting) {
+      await this.scrimCollectionTeamsResult.updateOne(
+        { scrimId: new ObjectId(scrim) },
+        { $set: teamsResultsData }
+      );
+    } else {
+      await this.scrimCollectionTeamsResult.insertOne(teamsResultsData);
+    }
+
     await interaction.reply({
       content:
-        "✅ Data from the scrim analyzed correctly:" +
+        "✅ Data from the scrim analyzed and saved correctly:" +
         `\n\n📊 Matches: ${matchesCount}` +
         `\n👥 Players per team: ${playersPerTeam}` +
         `\n🛡️ Teams: ${teamsQuantity}`,
