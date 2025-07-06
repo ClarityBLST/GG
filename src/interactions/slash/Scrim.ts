@@ -15,7 +15,7 @@ export default {
       description: "Scrim name/title (e.g., 'Tournament Weekly')",
       type: ApplicationCommandOptionType.String,
       required: true,
-      autocomplete: true,
+      autocomplete: false,
     },
     {
       name: "date",

@@ -21,9 +21,7 @@ export default class extends Command {
     public constructor(client: BaseClient) {
         super(client, {
             name: "register",
-            description: "Register your team for the current BloodStrike scrim",
-            memberPermissions: ["SendMessages"],
-            clientPermissions: ["ManageRoles", "ManageChannels"]
+            description: "Register your team for the current BloodStrike scrim"
         });
         this.collection = db.collection<Scrim>("scrims");
     }
@@ -32,6 +30,8 @@ export default class extends Command {
         if (!interaction.guild) {
             return this.replyError(interaction, "❌ This command must be used in a server");
         }
+
+        await interaction.deferReply({ ephemeral: true }); 
 
         const teamName = interaction.options.getString("team_name", true);
         const playerIdsInput = interaction.options.getString("player_ids", true);
@@ -114,7 +114,7 @@ export default class extends Command {
             reason: `BloodStrike team role for ${teamName}`
             });
 
-            const categoryName = "Nombre de la Categoría";
+            const categoryName = "test";
             const category = interaction.guild.channels.cache.find(
                 c => c.type === ChannelType.GuildCategory && c.name === categoryName
             );
@@ -230,7 +230,7 @@ export default class extends Command {
                 embeds: [embed]
                 });
             } else {
-                await interaction.reply({ 
+                await interaction.editReply({ 
                 content: `🎉 Team **${teamName}** registration successful!`,
                 embeds: [embed] 
                 });

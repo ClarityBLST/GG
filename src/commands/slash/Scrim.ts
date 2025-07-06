@@ -169,7 +169,7 @@ export default class extends Command {
       const orgChannelId = Config.LogsChannel;
       const channel = await interaction.guild?.channels.fetch(orgChannelId);
 
-      if (channel?.isTextBased()) {
+      if (channel && channel.type === 0) { 
         const logEmbed = new EmbedBuilder()
           .setTitle("📝 New Scrim Scheduled")
           .setColor(0x3498db)
@@ -186,7 +186,7 @@ export default class extends Command {
           ])
           .setTimestamp();
 
-        await channel.send({
+        await (channel as any).send({
           content: `@everyone New scrim scheduled!`,
           embeds: [logEmbed],
         });
