@@ -15,5 +15,6 @@ export const Db = {
 };
 
 export const Config = {
+	LogsChannel: process.env.LOGS_CHANNEL as string,
 	Devs: '@Diferent | @CrisKop' as string
 };
