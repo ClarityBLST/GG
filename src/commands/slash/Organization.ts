@@ -19,7 +19,7 @@ export default class extends Command {
 
     public constructor(client: BaseClient) {
         super(client, {
-            name: 'create-organization',
+            name: 'organization',
             description: 'Create a new organization with an admin',
             memberPermissions: ['Administrator']
         });
