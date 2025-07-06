@@ -13,12 +13,19 @@ export default class extends Command {
 
   public execute(interaction: ChatInputCommandInteraction<"cached" | "raw">) {
     const matchesCount = interaction.options.getString("matches_count", true);
-    const playersPerTeam = interaction.options.getUser(
+    const playersPerTeam = interaction.options.getString(
       "players_per_team",
       true
     );
     const teamsQuantity = interaction.options.getString("teams", true);
 
-    return interaction.reply("Command!");
+    return interaction.reply(
+      "Matches Count: " +
+        matchesCount +
+        "\nPlayers Per Team: " +
+        playersPerTeam +
+        "\nTeams Quantity: " +
+        teamsQuantity
+    );
   }
 }
