@@ -6,8 +6,8 @@ import {
 } from "discord-api-types/v10";
 
 export default {
-  name: "register",
-  description: "Register your team for the current BloodStrike scrim",
+  name: "scrim",
+  description: "Create a new Clarity scrim (Organization admins only)",
   type: ApplicationCommandType.ChatInput,
   options: [
     {

@@ -16,8 +16,8 @@ export default class extends Command {
 
     public constructor(client: BaseClient) {
         super(client, {
-            name: "create_scrim",
-            description: "Create a new BloodStrike scrim (Organization admins only)",
+            name: "scrim",
+            description: "Create a new Clarity scrim (Organization admins only)",
         });
         this.scrimCollection = db.collection<Scrim>("scrims");
         this.orgCollection = db.collection<Organization>("organizations");
