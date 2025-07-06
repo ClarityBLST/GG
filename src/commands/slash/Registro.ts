@@ -114,6 +114,7 @@ export default class extends Command {
                 { $push: { teams: teamData } }
             );
 
+
             const embed = new EmbedBuilder()
                 .setTitle(`✅ Successfully Registered for ${scrim.name}`)
                 .setDescription(`**${teamName}** is now registered in slot ${nextSlot}`)
@@ -143,10 +144,25 @@ export default class extends Command {
                 .setFooter({ text: "The team role will be automatically removed after the scrim" })
                 .setTimestamp();
 
-            await interaction.reply({ 
-                content: `🎉 Team **${teamName}** registration successful!`,
-                embeds: [embed] 
-            });
+            try {
+                if (interaction.replied || interaction.deferred) {
+                    await interaction.followUp({ 
+                        content: `🎉 Team **${teamName}** registration successful!`,
+                        embeds: [embed] 
+                    });
+                } else {
+                    await interaction.reply({ 
+                        content: `🎉 Team **${teamName}** registration successful!`,
+                        embeds: [embed] 
+                    });
+                }
+            } catch (err) {
+                if ((err as any).code === 10062) {
+                    console.warn("Interaction expired before reply could be sent.");
+                } else {
+                    throw err;
+                }
+            }
 
         } catch (error) {
             console.error("Error registering team:", error);
