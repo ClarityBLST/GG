@@ -5,8 +5,8 @@ import type { ChatInputCommandInteraction } from "discord.js";
 export default class extends Command {
   public constructor(client: BaseClient) {
     super(client, {
-      name: "example-command",
-      description: "example",
+      name: "create_scrim_excel_template",
+      description: "Create a template for scrim matches in Excel format.",
       memberPermissions: ["Administrator"],
     });
   }

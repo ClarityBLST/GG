@@ -6,7 +6,7 @@ import {
 } from "discord-api-types/v10";
 
 export default {
-  name: "CreateScrimExcelTemplate",
+  name: "create_scrim_excel_template",
   description: "Create a template for scrim matches in Excel format.",
   type: ApplicationCommandType.ChatInput,
   options: [
