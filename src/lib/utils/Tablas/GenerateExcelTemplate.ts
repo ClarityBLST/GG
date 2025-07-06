@@ -1,6 +1,7 @@
 import ExcelJS from "exceljs";
 import * as path from "path";
 import * as fs from "fs";
+import { Buffer } from "node:buffer";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,7 +9,6 @@ const __dirname = path.dirname(__filename);
 
 // MARK: Opciones para generar plantilla de scrim
 interface ScrimTemplateOptions {
-  fileName: string;
   numPartidas: number;
   jugadoresPorEquipo: number;
   equipos?: number;
@@ -18,14 +18,13 @@ interface ScrimTemplateOptions {
 /**
  * Genera una plantilla de scrim en formato Excel.
  * @param {ScrimTemplateOptions} options - Opciones para la plantilla.
- * @returns {Promise<void>} Promesa que se resuelve al guardar el archivo.
+ * @returns {Promise<Buffer>} Promesa que se resuelve al guardar el archivo.
  */
 export async function generarPlantillaScrimExcel({
-  fileName = "plantilla_scrim.xlsx",
   numPartidas,
   jugadoresPorEquipo,
   equipos = 16, // Número de equipos por defecto
-}: ScrimTemplateOptions): Promise<void> {
+}: ScrimTemplateOptions): Promise<Buffer> {
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Plantilla Scrim");
 
@@ -139,13 +138,7 @@ export async function generarPlantillaScrimExcel({
   // ❄️ Congelar filas superiores
   sheet.views = [{ state: "frozen", ySplit: 2 }];
 
-  // #MARK: 💾 Guardar archivo
-  const templatesDir = path.resolve(__dirname, "../../templates");
-  if (!fs.existsSync(templatesDir)) {
-    fs.mkdirSync(templatesDir);
-  }
-
-  const filePath = path.resolve(templatesDir, fileName);
-  await workbook.xlsx.writeFile(filePath);
-  console.log(`✅ Plantilla generada: ${filePath}`);
+  // #MARK: 💾 Retornar archivo
+  const uint8 = await workbook.xlsx.writeBuffer(); // Uint8Array
+  return Buffer.from(uint8); // convierte a Node Buffer
 }

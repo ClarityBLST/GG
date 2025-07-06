@@ -1,5 +1,6 @@
 import type BaseClient from "#lib/BaseClient.js";
 import Command from "#lib/structures/Command.js";
+import { generarPlantillaScrimExcel } from "#lib/utils/Tablas/GenerateExcelTemplate.js";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 export default class extends Command {
@@ -11,7 +12,9 @@ export default class extends Command {
     });
   }
 
-  public execute(interaction: ChatInputCommandInteraction<"cached" | "raw">) {
+  public async execute(
+    interaction: ChatInputCommandInteraction<"cached" | "raw">
+  ) {
     const matchesCount = interaction.options.getString("matches_count", true);
     const playersPerTeam = interaction.options.getString(
       "players_per_team",
@@ -19,13 +22,15 @@ export default class extends Command {
     );
     const teamsQuantity = interaction.options.getString("teams", true);
 
-    return interaction.reply(
-      "Matches Count: " +
-        matchesCount +
-        "\nPlayers Per Team: " +
-        playersPerTeam +
-        "\nTeams Quantity: " +
-        teamsQuantity
-    );
+    const file = await generarPlantillaScrimExcel({
+      numPartidas: parseInt(matchesCount, 10),
+      jugadoresPorEquipo: parseInt(playersPerTeam, 10),
+      equipos: parseInt(teamsQuantity, 10),
+    });
+
+    await interaction.reply({
+      content: "Here is your template for the scrim:",
+      files: [{ attachment: file, name: "template.xlsx" }],
+    });
   }
 }

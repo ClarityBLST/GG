@@ -49,19 +49,18 @@ declare global {
   }
 
   interface ReadScrimOptions {
-  fileName: string;
-  numPartidas: number;
-  jugadoresPorEquipo: number;
-  equipos?: number;
-}
+    numPartidas: number;
+    jugadoresPorEquipo: number;
+    equipos?: number;
+  }
 
-interface PlayerInfo {
+  interface PlayerInfo {
     id: string;
     nickname: string;
     avatar: string;
-}
+  }
 
-interface Scrim {
+  interface Scrim {
     _id: ObjectId;
     name: string;
     date: string; // DD/MM/YYYY
@@ -69,27 +68,26 @@ interface Scrim {
     status: "scheduled" | "registration" | "active" | "completed";
     maxTeams: number;
     teams: {
-        slot: string; // A-Z
-        name: string;
-        players: string[]; 
-        roleId?: string;
-        registeredAt: Date;
-        registeredBy: string;
-        stats?: {
-            kills: number;
-            position?: number;
-            banned?: boolean;
-        };
+      slot: string; // A-Z
+      name: string;
+      players: string[];
+      roleId?: string;
+      registeredAt: Date;
+      registeredBy: string;
+      stats?: {
+        kills: number;
+        position?: number;
+        banned?: boolean;
+      };
     }[];
     createdAt: Date;
     createdBy: string;
     guildId: string;
     regionalTimes: Record<string, string>;
     results?: {
-        completedAt: Date;
-        topTeams: string[];
-        totalKills: number;
+      completedAt: Date;
+      topTeams: string[];
+      totalKills: number;
     };
-}
-
+  }
 }
