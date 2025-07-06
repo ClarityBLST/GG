@@ -21,7 +21,7 @@ export default class extends Command {
 
     public constructor(client: BaseClient) {
         super(client, {
-            name: "nuke_scrims",
+            name: "delete",
             description: "[ADMIN] Completely remove all scrims data",
         });
         this.scrimCollection = db.collection<Scrim>("scrims");
