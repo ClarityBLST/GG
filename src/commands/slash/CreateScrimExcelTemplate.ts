@@ -29,7 +29,11 @@ export default class extends Command {
     });
 
     await interaction.reply({
-      content: "Here is your template for the scrim:",
+      content:
+        "✅ Here is your template for the scrim:" +
+        +`\n\n📊 Matches: ${matchesCount}` +
+        `\n👥 Players per team: ${playersPerTeam}` +
+        `\n🛡️ Teams: ${teamsQuantity}`,
       files: [{ attachment: file, name: "template.xlsx" }],
     });
   }
