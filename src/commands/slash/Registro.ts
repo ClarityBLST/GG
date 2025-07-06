@@ -35,7 +35,7 @@ export default class extends Command {
 
         const teamName = interaction.options.getString("team_name", true);
         const playerIdsInput = interaction.options.getString("player_ids", true);
-        const mentionsInput = interaction.options.getString("discord_mentions", true);
+        const mentions = interaction.options.getUser("discord_players", true);
 
         if (teamName.length < 3 || teamName.length > 20) {
             return this.replyError(interaction, "Team name must be between 3-20 characters");
@@ -46,12 +46,13 @@ export default class extends Command {
             return this.replyError(interaction, "Teams must have between 1-5 players");
         }
 
-        const mentionRegex = /<@!?(\d+)>/g;
-        const mentionMatches = mentionsInput.match(mentionRegex);
-        const discordUserIds = mentionMatches 
-            ? mentionMatches.map(m => m.replace(/<@!?(\d+)>/, '$1'))
-            : [];
-
+        let discordUserIds: string[] = [];
+        if (Array.isArray(mentions)) {
+            discordUserIds = mentions.map(m => (m as { id: string }).id);
+        } else if (mentions && typeof (mentions as { id?: string }).id === "string") {
+            discordUserIds = [(mentions as { id: string }).id];
+        }
+        
         if (discordUserIds.length !== playerIds.length) {
             return this.replyError(interaction, 
                 "Number of Discord mentions must match number of player IDs");

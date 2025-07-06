@@ -24,10 +24,10 @@ export default {
       required: true,
     },
     {
-        name: "discord_mentions",
+        name: "discord_players",
         description: "Discord mentions for team members (e.g., @Player1, @Player2)",
-        type: ApplicationCommandOptionType.User || ApplicationCommandOptionType.String,
-        required: false,
+        type: ApplicationCommandOptionType.User || ApplicationCommandOptionType.Mentionable || ApplicationCommandOptionType.String,
+        required: true,
         autocomplete: true,
     }
   ] as APIApplicationCommandOption[],
