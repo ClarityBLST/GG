@@ -9,7 +9,8 @@
     "format": "prettier --write .",
     "build": "rimraf ./dist && swc ./src --out-dir ./dist --copy-files",
     "register": "node ./dist/interactions/register.js -g",
-    "start": "node --no-warnings ./dist/index.js"
+    "start": "node --no-warnings ./dist/index.js",
+    "quickstart": "npm run build && npm run register && npm run start"
   },
   "keywords": [],
   "author": "",
