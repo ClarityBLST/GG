@@ -54,6 +54,37 @@ declare global {
   equipos?: number;
 }
 
+interface Scrim {
+    _id: ObjectId;
+    name: string;
+    date: string; // DD/MM/YYYY
+    time: string; // HH:MM (GMT)
+    status: "scheduled" | "registration" | "active" | "completed";
+    maxTeams: number;
+    teams: {
+        slot: string; // A-Z
+        name: string;
+        players: string[]; 
+        roleId?: string;
+        registeredAt: Date;
+        registeredBy: string;
+        stats?: {
+            kills: number;
+            position?: number;
+            banned?: boolean;
+        };
+    }[];
+    createdAt: Date;
+    createdBy: string;
+    guildId: string;
+    regionalTimes: Record<string, string>;
+    results?: {
+        completedAt: Date;
+        topTeams: string[];
+        totalKills: number;
+    };
+}
+
   interface IProfile extends IUser {
     team: number;
     ban?: number;
