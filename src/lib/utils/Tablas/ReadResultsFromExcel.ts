@@ -6,14 +6,6 @@ import * as fs from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// MARK: Opciones para leer resultados de scrim
-interface ReadScrimOptions {
-  fileName: string;
-  numPartidas: number;
-  jugadoresPorEquipo: number;
-  equipos?: number;
-}
-
 // MARK: Función para leer resultados de scrim desde un archivo Excel
 /**
  * Lee los resultados de un scrim desde un archivo Excel y los guarda en formato JSON.
@@ -36,6 +28,11 @@ export async function leerResultadosScrimExcel({
 
   await workbook.xlsx.readFile(filePath);
   const sheet = workbook.getWorksheet(1);
+
+  if (!sheet) {
+    console.error(`❌ La hoja de Excel no existe en el archivo: ${filePath}`);
+    return;
+  }
 
   console.log(`📄 Leyendo resultados de: ${filePath}`);
 

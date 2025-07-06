@@ -47,6 +47,13 @@ declare global {
     createdBy: string;
   }
 
+  interface ReadScrimOptions {
+  fileName: string;
+  numPartidas: number;
+  jugadoresPorEquipo: number;
+  equipos?: number;
+}
+
   interface IProfile extends IUser {
     team: number;
     ban?: number;
