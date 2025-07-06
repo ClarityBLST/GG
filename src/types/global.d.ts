@@ -1,6 +1,7 @@
 import type BaseClient from "#lib/BaseClient.js";
 import type { PermissionsString } from "discord.js";
 import type { EventEmitter } from "node:events";
+import { ObjectId } from "mongodb";
 
 declare global {
   interface DatabaseOptions {
@@ -54,6 +55,12 @@ declare global {
   equipos?: number;
 }
 
+interface PlayerInfo {
+    id: string;
+    nickname: string;
+    avatar: string;
+}
+
 interface Scrim {
     _id: ObjectId;
     name: string;
@@ -85,8 +92,4 @@ interface Scrim {
     };
 }
 
-  interface IProfile extends IUser {
-    team: number;
-    ban?: number;
-  }
 }
