@@ -144,6 +144,17 @@ export default class extends Command {
                 .setFooter({ text: "The team role will be automatically removed after the scrim" })
                 .setTimestamp();
 
+
+            if (playersInfo.length === playerIds.length) {
+                embed.spliceFields(1, 1, {
+                    name: "👥 Players",
+                    value: playersInfo.map(p => 
+                        `${p.nickname !== `Player ${p.id}` ? p.nickname : p.id}${p.nickname !== `Player ${p.id}` ? ` (ID: ${p.id})` : ""}`
+                    ).join("\n"),
+                    inline: true
+                });
+            }
+
             try {
                 if (interaction.replied || interaction.deferred) {
                     await interaction.followUp({ 
@@ -159,6 +170,19 @@ export default class extends Command {
             } catch (err) {
                 if ((err as any).code === 10062) {
                     console.warn("Interaction expired before reply could be sent.");
+                    try {
+                        await interaction.user.send({
+                            content: `🎉 Team **${teamName}** registration successful!`,
+                            embeds: [embed]
+                        });
+                    } catch (dmError) {
+                        console.warn("Failed to send DM to user after interaction expired.", dmError);
+                    }
+                } else if ((err as any).message?.includes("Invalid Form Body")) {
+                    await interaction.followUp({
+                        content: "There was an error displaying player nicknames. Please check your player IDs.",
+                        ephemeral: true
+                    });
                 } else {
                     throw err;
                 }
