@@ -15,7 +15,7 @@ const db = await Database.getInstance(Configuration).connect();
 
 export default class extends Command {
   protected admin: string = "1336144139397365831";
-  protected collection: Collection<Organization>;
+  protected collection: Collection<OptionalId<Organization>>;
 
   public constructor(client: BaseClient) {
     super(client, {
@@ -23,7 +23,7 @@ export default class extends Command {
       description: "Create a new organization with an admin",
       memberPermissions: ["Administrator"],
     });
-    this.collection = db.collection<Organization>("organizations");
+    this.collection = db.collection<OptionalId<Organization>>("organizations");
   }
 
   public async execute(
@@ -74,12 +74,14 @@ export default class extends Command {
 
       const key = randomBytes(4).toString("hex").toUpperCase();
 
-      const orgData: Organization = {
+      const orgData = {
         name,
         adminId,
         key,
         createdAt: new Date(),
         createdBy: creatorId,
+        members: [adminId],
+        scrimsCreated: 0,
       };
 
       await this.collection.insertOne(orgData as OptionalId<Organization>);

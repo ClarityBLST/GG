@@ -41,9 +41,12 @@ declare global {
   }
 
   interface Organization {
+    _id: ObjectId;
     name: string;
     adminId: string;
     key: string;
+    members: string[];
+    scrimsCreated: number;
     createdAt: Date;
     createdBy: string;
   }
