@@ -1,15 +1,15 @@
-import type BaseClient from '#lib/BaseClient.js';
-import Event from '#lib/structures/Event.js';
+import type BaseClient from "#lib/BaseClient.js";
+import Event from "#lib/structures/Event.js";
 
 export default class extends Event {
-	public constructor(client: BaseClient) {
-		super(client, {
-			name: 'warn',
-			once: false
-		});
-	}
+  public constructor(client: BaseClient) {
+    super(client, {
+      name: "warn",
+      once: false,
+    });
+  }
 
-	public run(info: string) {
-		console.warn(info);
-	}
+  public run(info: string) {
+    console.warn(info);
+  }
 }

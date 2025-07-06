@@ -1,10 +1,13 @@
-import { type APIApplicationCommand, ApplicationCommandType } from 'discord-api-types/v10';
+import {
+  type APIApplicationCommand,
+  ApplicationCommandType,
+} from "discord-api-types/v10";
 
 export default {
-	name: 'example-command',
-	description: 'example-command',
-	type: ApplicationCommandType.ChatInput,
-	dm_permission: true // esto cambialo depende mucho si quieres que el comando se ejecute en dm o no
+  name: "example-command",
+  description: "example-command",
+  type: ApplicationCommandType.ChatInput,
+  dm_permission: true, // esto cambialo depende mucho si quieres que el comando se ejecute en dm o no
 } as APIApplicationCommand; /*
     options: [
         {
