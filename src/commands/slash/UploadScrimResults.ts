@@ -6,8 +6,8 @@ import type { ChatInputCommandInteraction } from "discord.js";
 export default class extends Command {
   public constructor(client: BaseClient) {
     super(client, {
-      name: "read_scrim_excel",
-      description: "Read scrim data from an Excel file.",
+      name: "upload_scrim_results",
+      description: "Upload scrim results from an Excel file",
       memberPermissions: ["Administrator"],
     });
   }
