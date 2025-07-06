@@ -5,6 +5,8 @@ import { Database } from "#lib/Database.js";
 import { Db as Configuration } from "#lib/Configuration.js";
 import Command from "#lib/structures/Command.js";
 import { EmbedBuilder } from "@discordjs/builders";
+import { Config } from "#lib/Configuration.js";
+
 
 const db = await Database.getInstance(Configuration).connect();
 
@@ -132,7 +134,7 @@ export default class extends Command {
         }
     ) {
         try {
-            const logChannel = await interaction.guild?.channels.fetch("YOUR_LOG_CHANNEL_ID");
+            const logChannel = await interaction.guild?.channels.fetch(Config.LogsChannel);
             if (!logChannel?.isTextBased()) return;
 
             const logEmbed = new EmbedBuilder()
