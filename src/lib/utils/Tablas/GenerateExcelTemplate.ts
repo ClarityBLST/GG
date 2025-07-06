@@ -21,10 +21,10 @@ interface ScrimTemplateOptions {
  * @returns {Promise<void>} Promesa que se resuelve al guardar el archivo.
  */
 export async function generarPlantillaScrimExcel({
-  fileName,
+  fileName = "plantilla_scrim.xlsx",
   numPartidas,
   jugadoresPorEquipo,
-  equipos = 16,
+  equipos = 16, // Número de equipos por defecto
 }: ScrimTemplateOptions): Promise<void> {
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Plantilla Scrim");
