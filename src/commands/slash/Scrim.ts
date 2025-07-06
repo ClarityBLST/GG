@@ -80,7 +80,7 @@ export default class extends Command {
             const scrimData: Scrim = {
                 name,
                 date,
-                status: "scheduled",
+                status: "registration",
                 organization: {
                     id: organization._id,
                     name: organization.name,
