@@ -39,6 +39,15 @@ declare global {
 		isAdmin: boolean;
 	}
 
+	interface Organization {
+    	name: string;
+    	adminId: string;
+    	key: string;
+    	createdAt: Date;
+    	createdBy: string;
+	}
+
+
 	interface IProfile extends IUser {
 		team: number;
 		ban?: number;
