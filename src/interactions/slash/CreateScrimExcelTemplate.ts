@@ -11,29 +11,25 @@ export default {
   type: ApplicationCommandType.ChatInput,
   options: [
     {
-      name: "Matches Count",
+      name: "matches_count",
       description: "Quantity of matches to play in the scrim.",
       type: ApplicationCommandOptionType.String,
       required: true,
     },
     {
-      name: "Players Per Team",
+      name: "players_per_team",
       description: "Number of players per team in the scrim.",
-      type:
-        ApplicationCommandOptionType.User ||
-        ApplicationCommandOptionType.String,
+      type: ApplicationCommandOptionType.String,
       required: true,
       autocomplete: true,
     },
     {
-      name: "Teams",
+      name: "teams",
       description: "Number of teams in the scrim.",
-      type:
-        ApplicationCommandOptionType.User ||
-        ApplicationCommandOptionType.String,
+      type: ApplicationCommandOptionType.String,
       required: true,
       autocomplete: true,
     },
-  ] as APIApplicationCommandOption[],
+  ],
   dm_permission: false,
 } as APIApplicationCommand;
