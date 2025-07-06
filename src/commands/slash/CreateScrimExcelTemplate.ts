@@ -53,9 +53,9 @@ export default class extends Command {
       });
     }
 
-    const matchesCount = 3; // Default value, can be changed later
-    const playersPerTeam = 4; // Default value, can be changed later
-    const teamsQuantity = scrimData.maxTeams;
+    const matchesCount = scrimData.matchesCount || 3; // Default value, can be changed later
+    const playersPerTeam = scrimData.maxTeamSize || 4; // Default value, can be changed later
+    const teamsQuantity = scrimData.maxTeams || 18; // Default value, can be changed later
 
     const file = await generarPlantillaScrimExcel({
       numPartidas: matchesCount,

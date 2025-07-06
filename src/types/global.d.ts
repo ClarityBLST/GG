@@ -70,19 +70,21 @@ declare global {
     time: string; // HH:MM (GMT)
     status: "scheduled" | "registration" | "active" | "completed";
     maxTeams: number;
+    maxTeamSize?: number;
+    matchesCount?: number;
     organization: {
-        id: ObjectId;
-        name: string;
-        adminId: string;
+      id: ObjectId;
+      name: string;
+      adminId: string;
     };
     fixedTimes: {
-        GMT: string;
-        BR_AR: string;
-        US_VE: string;
-        CO: string;
-        MX: string;
+      GMT: string;
+      BR_AR: string;
+      US_VE: string;
+      CO: string;
+      MX: string;
     };
-teams: {
+    teams: {
       slot: string; // A-Z
       name: string;
       players: string[];
