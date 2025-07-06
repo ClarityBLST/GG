@@ -13,13 +13,13 @@ export default {
 		{
 			name: 'name',
 			description: 'Organization Name.',
-			type: ApplicationCommandOptionType.User || ApplicationCommandOptionType.String,
+			type: ApplicationCommandOptionType.String,
 			required: true
 		},
 		{
 			name: 'admin',
 			description: 'Organization admin.',
-			type: ApplicationCommandOptionType.String,
+			type: ApplicationCommandOptionType.User || ApplicationCommandOptionType.String,
 			required: true,
 			autocomplete: true
 		}

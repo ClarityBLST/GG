@@ -13,14 +13,6 @@ import { Config } from '#lib/Configuration.js';
 
 const db = await Database.getInstance(Configuration).connect();
 
-interface Organization {
-    name: string;
-    adminId: string;
-    key: string;
-    createdAt: Date;
-    createdBy: string;
-}
-
 export default class extends Command {
     protected admin: string = '1336144139397365831';
     protected collection: Collection<Organization>;
