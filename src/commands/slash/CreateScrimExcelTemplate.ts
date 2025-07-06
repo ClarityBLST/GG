@@ -75,11 +75,15 @@ export default class extends Command {
 
   override async autocomplete(interaction: AutocompleteInteraction) {
     const focusedOption = interaction.options.getFocused(true);
+    const userId = interaction.user.id;
 
     if (focusedOption.name !== "scrim") return;
 
     const scrims = await this.scrimCollection
-      .find({ name: { $regex: focusedOption.value, $options: "i" } })
+      .find({
+        name: { $regex: focusedOption.value, $options: "i" },
+        "organization.adminId": userId,
+      })
       .limit(25)
       .toArray();
 
