@@ -140,7 +140,7 @@ declare global {
     matches: MatchResult[];
   }
 
-  interface ScrimResult {
+  interface ScrimTeamsResult {
     _id: ObjectId;
     scrimId: ObjectId;
     teams: TeamResult[];
