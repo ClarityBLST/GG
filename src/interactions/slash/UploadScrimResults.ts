@@ -11,22 +11,11 @@ export default {
   type: ApplicationCommandType.ChatInput,
   options: [
     {
-      name: "matches_count",
-      description: "Quantity of matches to play in the scrim.",
+      name: "scrim",
+      description: "Choose a scrim",
       type: ApplicationCommandOptionType.String,
       required: true,
-    },
-    {
-      name: "players_per_team",
-      description: "Number of players per team in the scrim.",
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-    {
-      name: "teams",
-      description: "Number of teams in the scrim.",
-      type: ApplicationCommandOptionType.String,
-      required: true,
+      autocomplete: true, // <- ¡clave!
     },
     {
       name: "file",
