@@ -7,6 +7,7 @@
     "lint": "eslint . --ext mjs,js,ts --fix",
     "format": "prettier --write .",
     "build": "rimraf ./dist && swc ./src --out-dir ./dist --copy-files",
+    "register": "node ./dist/interactions/register.js -g",
     "start": "node --no-warnings ./dist/index.js"
   },
   "keywords": [],
