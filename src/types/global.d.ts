@@ -145,4 +145,21 @@ declare global {
     scrimId: ObjectId;
     teams: TeamResult[];
   }
+
+  //#MARK: ScrimFinalResults
+
+  interface PlayerWithKills {
+    name: string;
+    totalKills: number;
+  }
+
+  interface TeamWithPoints {
+    teamId: string;
+    teamName: string;
+    players: PlayerWithKills[];
+    totalRankingPoints: number;
+    totalKillPoints: number;
+    totalPoints: number;
+    rank: number;
+  }
 }
