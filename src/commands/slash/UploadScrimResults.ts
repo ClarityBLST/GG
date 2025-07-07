@@ -12,7 +12,7 @@ const db = await Database.getInstance(Configuration).connect();
 
 export default class extends Command {
   protected scrimCollection: Collection<Scrim>;
-  protected scrimCollectionTeamsResult: Collection<ScrimTeamsResult>;
+  protected scrimCollectionTeamsResult: Collection<ScrimPartialResult>;
 
   public constructor(client: BaseClient) {
     super(client, {
@@ -23,7 +23,7 @@ export default class extends Command {
 
     this.scrimCollection = db.collection<Scrim>("scrims");
     this.scrimCollectionTeamsResult =
-      db.collection<ScrimTeamsResult>("scrimTeamsResult");
+      db.collection<ScrimPartialResult>("ScrimPartialResult");
   }
 
   public async execute(
@@ -83,7 +83,7 @@ export default class extends Command {
       equipos: teamsQuantity,
     });
 
-    const teamsResultsData: ScrimTeamsResult = {
+    const teamsResultsData: ScrimPartialResult = {
       _id: new ObjectId(),
       scrimId: new ObjectId(scrim),
       teams: resultsJson,

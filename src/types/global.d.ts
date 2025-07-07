@@ -140,7 +140,7 @@ declare global {
     matches: MatchResult[];
   }
 
-  interface ScrimTeamsResult {
+  interface ScrimPartialResult {
     _id: ObjectId;
     scrimId: ObjectId;
     teams: TeamResult[];
@@ -161,5 +161,11 @@ declare global {
     totalKillPoints: number;
     totalPoints: number;
     rank: number;
+  }
+
+  interface ScrimResults {
+    _id: ObjectId;
+    scrimId: ObjectId;
+    results: TeamWithPoints[];
   }
 }
