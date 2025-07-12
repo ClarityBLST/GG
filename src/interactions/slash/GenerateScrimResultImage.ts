@@ -6,8 +6,8 @@ import {
 } from "discord-api-types/v10";
 
 export default {
-  name: "upload_scrim_results",
-  description: "Upload scrim results from an Excel file",
+  name: "scrim_result",
+  description: "Generate a scrim result image",
   type: ApplicationCommandType.ChatInput,
   options: [
     {

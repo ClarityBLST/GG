@@ -140,6 +140,13 @@ declare global {
     matches: MatchResult[];
   }
 
+  interface TeamCalculatedResult {
+    teamName: string;
+    totalRankingPoints: number;
+    totalKillPoints: number;
+    totalPoints: number;
+  }
+
   interface ScrimPartialResult {
     _id: ObjectId;
     scrimId: ObjectId;

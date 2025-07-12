@@ -1,6 +1,6 @@
 import type BaseClient from "#lib/BaseClient.js";
 import Command from "#lib/structures/Command.js";
-import { generarPlantillaScrimExcel } from "#lib/utils/Tablas/GenerateExcelTemplate.js";
+import { generarPlantillaScrimExcel } from "#lib/utils/Excel/GenerateExcelTemplate.js";
 import type { ChatInputCommandInteraction } from "discord.js";
 import type { AutocompleteInteraction } from "discord.js";
 import { Database } from "#lib/Database.js";
@@ -73,18 +73,53 @@ export default class extends Command {
     });
   }
 
+  // #MARK: Autocomplete
   override async autocomplete(interaction: AutocompleteInteraction) {
     const focusedOption = interaction.options.getFocused(true);
     const userId = interaction.user.id;
 
     if (focusedOption.name !== "scrim") return;
 
+    // Buscar solo para el administrador de la organización
+    /*
     const scrims = await this.scrimCollection
       .find({
         name: { $regex: focusedOption.value, $options: "i" },
         "organization.adminId": userId,
       })
       .limit(25)
+      .toArray();
+      */
+
+    // Buscar scrims para admins y miembros de la organización
+    const scrims = await this.scrimCollection
+      .aggregate([
+        {
+          $match: {
+            name: { $regex: focusedOption.value, $options: "i" },
+          },
+        },
+        {
+          $lookup: {
+            from: "organizations", // nombre real de la colección
+            localField: "organization.id",
+            foreignField: "_id",
+            as: "organizationData",
+          },
+        },
+        {
+          $unwind: "$organizationData",
+        },
+        {
+          $match: {
+            $or: [
+              { "organizationData.adminId": userId },
+              { "organizationData.members": userId }, // esto busca en el array de strings
+            ],
+          },
+        },
+        { $limit: 25 },
+      ])
       .toArray();
 
     const choices = scrims.map((scrim) => ({
