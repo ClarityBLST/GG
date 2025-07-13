@@ -2,6 +2,7 @@ import type BaseClient from "#lib/BaseClient.js";
 import Event from "#lib/structures/Event.js";
 import { redBright, underline } from "colorette";
 import { ActivityType } from "discord.js";
+import { setupScrimReminder } from "#lib/utils/Tasks/ScrimReminder.js";
 
 export default class extends Event {
   public constructor(client: BaseClient) {
@@ -11,7 +12,7 @@ export default class extends Event {
     });
   }
 
-  public run() {
+  public async run() {
     this.client.user.setPresence({
       activities: [
         {
@@ -29,5 +30,6 @@ export default class extends Event {
     console.log(
       `Loaded ${this.client.commands.size} commands & ${this.client.events.size} events!`
     );
+    await setupScrimReminder(this.client);    
   }
 }

@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.3.1",
+    "@types/node-schedule": "^2.1.8",
     "@types/semver": "^7.5.0",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
@@ -46,6 +47,7 @@
     "fs": "^0.0.1-security",
     "globby": "^13.1.4",
     "mongodb": "^5.7.0",
+    "node-schedule": "^2.1.1",
     "path": "^0.12.7"
   },
   "packageManager": "pnpm@10.12.4"
