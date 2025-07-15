@@ -113,12 +113,7 @@ export default class extends Command {
 
     // #MARK: 🟥 Función: Generar la imagen del leaderboard
 
-    const date: Date = new Date();
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear();
-
-    const dateString = `${day}/${month}/${year}`;
+    const dateString = scrimData.date;
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
