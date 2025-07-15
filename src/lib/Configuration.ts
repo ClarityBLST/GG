@@ -1,9 +1,9 @@
 import type { PermissionsString } from "discord.js";
-import pkg from "../../package.json" assert { type: "json" };
+//import pkg from "../../package.json" assert { type: "json" };
 
 export const Client = {
   token: process.env.DISCORD_TOKEN as string,
-  version: (process.env.CLIENT_VERSION ??= pkg.version),
+  //version: (process.env.CLIENT_VERSION ??= pkg.version),
   owners: process.env.CLIENT_OWNERS?.split(",").filter(
     (item) => item.length
   ) as string[],

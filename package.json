@@ -4,12 +4,15 @@
   "description": "",
   "main": "dist/index.js",
   "type": "module",
+  "imports": {
+    "#lib/*": "./dist/lib/*"
+  },
   "scripts": {
     "lint": "eslint . --ext mjs,js,ts --fix",
     "format": "prettier --write .",
     "build": "rimraf dist && esbuild src/**/*.ts --outdir=dist --platform=node --format=esm",
     "register": "node ./dist/interactions/register.js -g",
-    "start": "node --no-warnings ./dist/src/index.js",
+    "start": "node --no-warnings ./dist/index.js",
     "quickstart": "npm run build && npm run register && npm run start"
   },
   "keywords": [],
@@ -38,7 +41,6 @@
     "@discordjs/rest": "^1.7.1",
     "@discordjs/util": "^0.3.1",
     "axios": "^1.4.0",
-    "canvas": "^3.1.2",
     "colorette": "^2.0.20",
     "discord-api-types": "^0.37.45",
     "discord.js": "^14.11.0",
