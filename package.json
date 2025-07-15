@@ -4,12 +4,15 @@
   "description": "",
   "main": "dist/index.js",
   "type": "module",
+  "imports": {
+    "#lib/*": "./dist/lib/*"
+  },
   "scripts": {
     "lint": "eslint . --ext mjs,js,ts --fix",
     "format": "prettier --write .",
     "build": "rimraf dist && esbuild src/**/*.ts --outdir=dist --platform=node --format=esm",
     "register": "node ./dist/interactions/register.js -g",
-    "start": "node --no-warnings ./dist/src/index.js",
+    "start": "node --no-warnings ./dist/index.js",
     "quickstart": "npm run build && npm run register && npm run start"
   },
   "keywords": [],
