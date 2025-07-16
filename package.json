@@ -41,7 +41,6 @@
     "@discordjs/rest": "^1.7.1",
     "@discordjs/util": "^0.3.1",
     "axios": "^1.4.0",
-    "canvas": "^3.1.2",
     "colorette": "^2.0.20",
     "discord-api-types": "^0.37.45",
     "discord.js": "^14.11.0",

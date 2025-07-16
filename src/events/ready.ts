@@ -2,7 +2,7 @@ import type BaseClient from "#lib/BaseClient.js";
 import Event from "#lib/structures/Event.js";
 import { redBright, underline } from "colorette";
 import { ActivityType } from "discord.js";
-import { setupScrimReminder } from "#lib/utils/Tasks/ScrimReminder.js";
+import { setupScrimReminder } from "#lib/utils/Tasks/scrimReminder.js";
 
 export default class extends Event {
   public constructor(client: BaseClient) {

@@ -51,7 +51,7 @@ export default class extends Command {
         }
 
         try {
-            let filter: any = {};
+            const filter: any = {};
 
             if (organizationOnly && organization) {
                 filter["organization.id"] = organization._id;

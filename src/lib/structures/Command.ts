@@ -43,7 +43,6 @@ export default abstract class Command {
     interaction: CommandInteraction<"cached" | "raw">
   ): Awaitable<unknown>;
 
-  // @ts-expect-error
   public autocomplete(
     interaction: AutocompleteInteraction<"cached" | "raw">
   ): Awaitable<unknown> {
