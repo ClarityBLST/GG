@@ -14,7 +14,7 @@ import { Config } from "#lib/Configuration.js";
 const db = await Database.getInstance(Configuration).connect();
 
 export default class extends Command {
-  protected admin: string = "1336144139397365831";
+  protected admin: string = process.env.CLIENT_OWNERS || "1336144139397365831";
   protected collection: Collection<OptionalId<Organization>>;
 
   public constructor(client: BaseClient) {

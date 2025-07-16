@@ -33,7 +33,10 @@ export default class extends Command {
     }
 
     const organization = await this.orgCollection.findOne({
-      $or: [{ adminId: interaction.user.id }, { members: interaction.user.id }],
+      $or: [
+        { adminId: interaction.user.id },
+        // { members: interaction.user.id }
+      ],
     });
 
     if (!organization) {
@@ -169,7 +172,7 @@ export default class extends Command {
       const orgChannelId = Config.LogsChannel;
       const channel = await interaction.guild?.channels.fetch(orgChannelId);
 
-      if (channel && channel.type === 0) { 
+      if (channel && channel.type === 0) {
         const logEmbed = new EmbedBuilder()
           .setTitle("📝 New Scrim Scheduled")
           .setColor(0x3498db)
