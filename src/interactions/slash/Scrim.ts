@@ -11,6 +11,13 @@ export default {
   type: ApplicationCommandType.ChatInput,
   options: [
     {
+      name: "organization",
+      description: "Choose a organization to create the scrim",
+      type: ApplicationCommandOptionType.String,
+      required: true,
+      autocomplete: true, // <- ¡clave!
+    },
+    {
       name: "name",
       description: "Scrim name/title (e.g., 'Tournament Weekly')",
       type: ApplicationCommandOptionType.String,

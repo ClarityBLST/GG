@@ -6,6 +6,7 @@ import { Db as Configuration } from "#lib/Configuration.js";
 import Command from "#lib/structures/Command.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { Config } from "#lib/Configuration.js";
+import type { AutocompleteInteraction } from "discord.js";
 
 const db = await Database.getInstance(Configuration).connect();
 
@@ -32,25 +33,32 @@ export default class extends Command {
       );
     }
 
+    const organizationId = interaction.options.getString("organization", true);
+    
+    // Buscar la organización específica seleccionada
     const organization = await this.orgCollection.findOne({
+      _id: new ObjectId(organizationId),
       $or: [
         { adminId: interaction.user.id },
-        // { members: interaction.user.id }
+        { members: interaction.user.id }
       ],
     });
 
     if (!organization) {
       return this.replyError(
         interaction,
-        "🚫 You must be part of an organization to create scrims\n" +
-          "Please contact your organization admin to create one."
+        "🚫 You don't have permission to create scrims for this organization or it doesn't exist."
       );
     }
 
-    if (organization.adminId !== interaction.user.id) {
+    // Verificar si el usuario es admin o miembro
+    const isAdmin = organization.adminId === interaction.user.id;
+    const isMember = organization.members?.includes(interaction.user.id);
+    
+    if (!isAdmin && !isMember) {
       return this.replyError(
         interaction,
-        `🔒 Only organization admins can create scrims\n` +
+        `🔒 You must be an admin or member of the organization to create scrims\n` +
           `Current admin: <@${organization.adminId}>`
       );
     }
@@ -58,8 +66,7 @@ export default class extends Command {
     const name = interaction.options.getString("name", true);
     const date = interaction.options.getString("date", true);
     const maxTeams = interaction.options.getInteger("max_teams") || 18;
-    const playersPerTeam =
-      interaction.options.getInteger("players_per_team") || 4;
+    const playersPerTeam = interaction.options.getInteger("max_players_per_team") || 4;
     const matchesCount = interaction.options.getInteger("matches_count") || 3;
 
     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
@@ -207,5 +214,42 @@ export default class extends Command {
       embeds: [new EmbedBuilder().setColor(0xff0000).setDescription(message)],
       ephemeral: true,
     });
+  }
+
+  // #MARK: Autocomplete
+  override async autocomplete(interaction: AutocompleteInteraction) {
+    const focusedOption = interaction.options.getFocused(true);
+    const userId = interaction.user.id;
+
+    if (focusedOption.name === "organization") {
+      try {
+        // Buscar todas las organizaciones donde el usuario sea admin o miembro
+        const organizations = await this.orgCollection
+          .find({
+            $or: [
+              { adminId: userId },
+              { members: userId }
+            ]
+          })
+          .limit(25)
+          .toArray();
+
+        // Filtrar por el texto que está escribiendo el usuario
+        const filtered = organizations.filter(org => 
+          org.name.toLowerCase().includes(focusedOption.value.toLowerCase())
+        );
+
+        // Crear las opciones para el autocompletado
+        const choices = filtered.map(org => ({
+          name: `${org.name} ${org.adminId === userId ? '(Admin)' : '(Member)'}`,
+          value: org._id.toString()
+        }));
+
+        await interaction.respond(choices.slice(0, 25));
+      } catch (error) {
+        console.error("Error in organization autocomplete:", error);
+        await interaction.respond([]);
+      }
+    }
   }
 }

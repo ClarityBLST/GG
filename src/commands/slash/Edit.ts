@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, User as DiscordUser } from "discord.js";
+import type { ChatInputCommandInteraction, User as DiscordUser, AutocompleteInteraction } from "discord.js";
 import type { Collection } from "mongodb";
 import type BaseClient from "#lib/BaseClient.js";
 import { Database } from "#lib/Database.js";
@@ -6,6 +6,7 @@ import { Db as Configuration } from "#lib/Configuration.js";
 import Command from "#lib/structures/Command.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { ApplicationCommandOptionType } from "discord.js";
+import { ObjectId } from "mongodb";
 
 const db = await Database.getInstance(Configuration).connect();
 
@@ -23,13 +24,19 @@ export default class extends Command {
     public async execute(interaction: ChatInputCommandInteraction<"cached" | "raw">) {
         await interaction.deferReply({ ephemeral: true });
 
+        const organizationId = interaction.options.getString("organization", true);
         const action = interaction.options.getString("action", true);
         const user = interaction.options.getUser("user");
         const newName = interaction.options.getString("new_name");
 
         try {
+            // Buscar la organización donde el usuario sea admin o miembro
             const organization = await this.collection.findOne({ 
-                adminId: interaction.user.id 
+                _id: new ObjectId(organizationId),
+                $or: [
+                    { adminId: interaction.user.id },
+                    { members: interaction.user.id }
+                ]
             });
 
             if (!organization) {
@@ -37,13 +44,29 @@ export default class extends Command {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(0xFFA500)
-                            .setDescription("⚠️ You don't have an organization yet")
+                            .setDescription("⚠️ You don't have access to this organization or it doesn't exist")
                     ]
                 });
             }
 
             if (!organization.members) {
                 organization.members = [];
+            }
+
+            // Verificar si el usuario es admin o miembro
+            const isAdmin = organization.adminId === interaction.user.id;
+            const isMember = organization.members.includes(interaction.user.id);
+
+            // Solo permitir "info" para miembros, todas las acciones para admins
+            if (!isAdmin && action !== "info") {
+                return interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(0xFF0000)
+                            .setDescription("🔒 Only organization admins can perform this action\n" +
+                                          "Members can only view organization info")
+                    ]
+                });
             }
 
             switch (action) {
@@ -60,7 +83,7 @@ export default class extends Command {
                     if (!newName) return this.replyMissingNewName(interaction);
                     return this.handleRename(interaction, organization, newName);
                 case "info":
-                    return this.showOrganizationInfo(interaction, organization);
+                    return this.showOrganizationInfo(interaction, organization, isAdmin);
                 default:
                     return interaction.editReply({
                         embeds: [
@@ -79,6 +102,43 @@ export default class extends Command {
                         .setDescription("❌ An error occurred while managing your organization")
                 ]
             });
+        }
+    }
+
+    // #MARK: Autocomplete
+    override async autocomplete(interaction: AutocompleteInteraction) {
+        const focusedOption = interaction.options.getFocused(true);
+        const userId = interaction.user.id;
+
+        if (focusedOption.name === "organization") {
+            try {
+                // Buscar todas las organizaciones donde el usuario sea admin o miembro
+                const organizations = await this.collection
+                    .find({
+                        $or: [
+                            { adminId: userId },
+                            { members: userId }
+                        ]
+                    })
+                    .limit(25)
+                    .toArray();
+
+                // Filtrar por el texto que está escribiendo el usuario
+                const filtered = organizations.filter(org => 
+                    org.name.toLowerCase().includes(focusedOption.value.toLowerCase())
+                );
+
+                // Crear las opciones para el autocompletado
+                const choices = filtered.map(org => ({
+                    name: `${org.name} ${org.adminId === userId ? '(Admin)' : '(Member)'}`,
+                    value: org._id.toString()
+                }));
+
+                await interaction.respond(choices.slice(0, 25));
+            } catch (error) {
+                console.error("Error in organization autocomplete:", error);
+                await interaction.respond([]);
+            }
         }
     }
 
@@ -290,22 +350,38 @@ export default class extends Command {
 
     private async showOrganizationInfo(
         interaction: ChatInputCommandInteraction,
-        organization: Organization
+        organization: Organization,
+        isAdmin: boolean
     ) {
         const members = organization.members || [];
-        const membersList = members.length > 0 ? 
-            members.map(id => `<@${id}>`).join(", ") : 
-            "No members yet";
+        
+        // Crear lista de miembros con roles
+        let membersList = "";
+        
+        // Agregar el admin primero
+        membersList += `👑 <@${organization.adminId}> (Admin)\n`;
+        
+        // Agregar los miembros
+        if (members.length > 0) {
+            members.forEach(memberId => {
+                membersList += `👤 <@${memberId}> (Member)\n`;
+            });
+        } else {
+            membersList += "No members yet";
+        }
 
         const embed = new EmbedBuilder()
             .setColor(0x3498DB)
             .setTitle(`🏢 Organization: ${organization.name}`)
             .addFields([
-                { name: "🛡️ Owner", value: `<@${organization.adminId}>`, inline: true },
-                { name: "👥 Members", value: members.length.toString(), inline: true },
+                { name: "👑 Owner/Admin", value: `<@${organization.adminId}>`, inline: true },
+                { name: "👥 Total Members", value: members.length.toString(), inline: true },
                 { name: "📅 Created", value: organization.createdAt.toLocaleDateString(), inline: true },
-                { name: "Member List", value: membersList, inline: false }
+                { name: "📋 Member List", value: membersList, inline: false }
             ])
+            .setFooter({ 
+                text: isAdmin ? "You are the admin of this organization" : "You are a member of this organization"
+            })
             .setTimestamp();
 
         return interaction.editReply({ embeds: [embed] });
